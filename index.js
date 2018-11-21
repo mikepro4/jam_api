@@ -5,7 +5,9 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const keys = require("./config/keys");
+
 require("./models/User");
+require("./models/Jam");
 
 mongoose.Promise = global.Promise;
 const options = {
@@ -28,6 +30,7 @@ app.use(passport.session());
 
 require("./services/passport");
 require("./routes/authRoutes")(app);
+require("./routes/jamRoutes")(app);
 
 
 app.get("/", (req, res) => {
