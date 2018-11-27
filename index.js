@@ -5,6 +5,9 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const keys = require("./config/keys");
+const fileUpload = require("express-fileupload")
+const PUBLIC_DIR = "public";
+const STATIC_DIR = "static";
 
 require("./models/User");
 require("./models/Jam");
@@ -16,9 +19,9 @@ const options = {
 mongoose.connect(keys.mongoURI, options);
 
 const app = express();
-
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cors());
-app.use(bodyParser.json());
 app.use(
 	cookieSession({
 		maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -28,9 +31,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(fileUpload());
+app.use(express.static(STATIC_DIR));
+app.use(express.static(PUBLIC_DIR));
+
 require("./services/passport");
 require("./routes/authRoutes")(app);
 require("./routes/jamRoutes")(app);
+require("./routes/fileUploadRoutes")(app);
 
 
 app.get("/", (req, res) => {
