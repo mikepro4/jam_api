@@ -48,6 +48,7 @@ module.exports = app => {
 	// ===========================================================================
 
 	app.post("/jams/update", requireLogin, async (req, res) => {
+    console.log(req.body)
 		Jam.update(
 			{
 				_id: req.body.jamId
@@ -59,8 +60,8 @@ module.exports = app => {
 				if (err) res.status(400).send({ error: "true", error: err });
 				if (info) {
 					Jam.findOne({ _id: req.body.jamId }, async (err, jam) => {
-						if (track) {
-							res.json({ success: "true", info: info, data: jam });
+						if (jam) {
+							res.json({ success: "true", info: info, jam: jam });
 						}
 					});
 				}

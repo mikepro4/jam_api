@@ -22,7 +22,7 @@ module.exports = app => {
 				filePath,
 				{ resource_type: "video" },
 				function(error, result) {
-					console.log(result, error);
+					// console.log(result, error);
 					fs.unlinkSync(filePath);
 					return res.send({uploaded: "ok", result: result});
 			});
